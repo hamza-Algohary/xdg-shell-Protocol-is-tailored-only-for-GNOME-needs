@@ -19,10 +19,10 @@ That's bad (still in my opinion) because it's simply not enough for other deskto
 First, let's explain something. On most desktop environments desktop components (like dock, panel, wallpaper, desktop icons, etc.) are regular clients. In order for those components to work, they need certain functions to be implemented by the compositor, those functions include:
     - Ability to move the window
     - Ability to tell the compositor to not draw decorations around said windows.
-    -Ability to keep it above all windows(in case of the panel) or keep below all windows (in case of the background).
+    - Ability to keep it above all windows(in case of the panel) or keep below all windows (in case of the background).
     - In addition to some other functionalities.
     
-On X11, those were defined in what is called the [ICCCM specification](https://x.org/releases/X11R7.6/doc/xorg-docs/specs/ICCCM/icccm.html), which allows X11 clients to tell the compositor to do any of the above. On Wayland, there is not anything in the core protocol that allows that. Which means that desktop environments creators have to draw all these in the compositor. GNOME is the only desktop which does that, while many other desktops (KDE, XFCE, Lxqt, etc.) draw their components outside the compositor (an exception to that is cinnamon, because it started as a fork of GNOME 3). The situation is even worse. Apps like [plank dock], [latte dock] and other independent desktop  components can't exist in Wayland. There are protocol extensions that fix that, and I will talk about them later.
+On X11, those were defined in what is called the [ICCCM specification](https://x.org/releases/X11R7.6/doc/xorg-docs/specs/ICCCM/icccm.html), which allows X11 clients to tell the compositor to do any of the above. On Wayland, there is not anything in the core protocol that allows that. Which means that desktop environments creators have to draw all these in the compositor. GNOME is the only desktop which does that, while many other desktops (KDE, XFCE, Lxqt, etc.) draw their components outside the compositor (an exception to that is cinnamon, because it started as a fork of GNOME 3). The situation is even worse. Apps like [plank dock](https://github.com/ricotz/plank), [latte dock](https://github.com/KDE/latte-dock) and other independent desktop  components can't exist in Wayland. There are protocol extensions that fix that, and I will talk about them later.
 
 In summary the situation is:
     - Desktop environments have to draw everything in the compositor.
