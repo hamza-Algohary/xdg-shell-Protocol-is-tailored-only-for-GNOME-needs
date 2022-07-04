@@ -1,12 +1,12 @@
 # Wayland Core Protocol is tailored only for GNOME needs and the idea of protocol extensions doesn't work. (Opinion)
 
-##### This article assumes that you know what's a [display server](). 
+##### This article assumes that you know what's a [display server](https://itsfoss.com/display-server/). 
 
-Wayland is a display server system based on the idea of protocols. That means that there is no Wayland display server that clients need to talk to. Instead, Wayland defines a protocol for creating display servers. Any client application that is programmed to use this protocol can work on any display server(or compositor) that fully supports supports this protocol. It's like the [world wide web protocols](), where any website is able to work on any browser as much the browser is completely supporting the web protocols. So you don't create websites for specific browsers.
+Wayland is a display server system based on the idea of [protocols](https://wayland.freedesktop.org/docs/html/ch04.html). That means that there is no Wayland display server that clients need to talk to. Instead, Wayland defines a protocol for creating display servers. Any client application that is programmed to use this protocol can work on any display server(or compositor) that fully supports supports this protocol. It's like the [world wide web protocols](https://www.w3.org/standards/), where any website is able to work on any browser as much the browser is completely supporting the web protocols. So you don't create websites for specific browsers.
 
 That also means that the functions defined in the protocol decide what applications (aka: clients) can do & what they can't do. Returning to websites example, if the protocol doesn't define necessary functions, it will limit the web developers. Take CSS as an example, if it wasn't available in the web protocols, all websites would have looked the same and boring. So the protocol must include all necessary basics in a way that doesn't limit developers to few cases and uses.
 
-When Wayland developers started defining the protocol, they had to decide what functionalities to include in the protocol. Their decision was to [make the protocol as minimal as possible](), and compositors shall create new protocols for their specific use cases if they desire to offer more functionality not included in the main protocol. The main protocol was called [Wayland Core protocol](), and other protocols are called [protocol extensions](). All compositors are expected to support the core protocol, and they may not other protocol extensions. That means that applications which depend on certain functionality defined in one of the protocol extensions will not work on all compositors.
+When Wayland developers started defining the protocol, they had to decide what functionalities to include in the protocol. Their decision was to [make the protocol as minimal as possible](), and compositors shall create new protocols for their specific use cases if they desire to offer more functionality not included in the main protocol. The main protocol was called [Wayland Core protocol](https://wayland.app/protocols/wayland), and other protocols are called [protocol extensions](https://wayland.app/protocols/). All compositors are expected to support the core protocol, and they may not other protocol extensions. That means that applications which depend on certain functionality defined in one of the protocol extensions will not work on all compositors.
 
 All of the above is what Wayland developers intended for the Wayland world to be. Now let's delve into more detail. How much is Wayland core protocol minimal? In other words, what determines what shall be in the core protocol and what shall not be? In this article I'm going to give you an answer to this question based on my opinion, which is in turn based on a group of simple facts.
 
@@ -22,7 +22,7 @@ First, let's explain something. On most desktop environments desktop components 
     -Ability to keep it above all windows(in case of the panel) or keep below all windows (in case of the background).
     - In addition to some other functionalities.
     
-On X11, those were defined in what is called the [ICCCM specification](), which allows X11 clients to tell the compositor to do any of the above. On Wayland, there is not anything in the core protocol that allows that. Which means that desktop environments creators have to draw all these in the compositor. GNOME is the only desktop which does that, while many other desktops (KDE, XFCE, Lxqt, etc.) draw their components outside the compositor (an exception to that is cinnamon, because it started as a fork of GNOME 3). The situation is even worse. Apps like [plank dock], [latte dock] and other independent desktop  components can't exist in Wayland. There are protocol extensions that fix that, and I will talk about them later.
+On X11, those were defined in what is called the [ICCCM specification](https://x.org/releases/X11R7.6/doc/xorg-docs/specs/ICCCM/icccm.html), which allows X11 clients to tell the compositor to do any of the above. On Wayland, there is not anything in the core protocol that allows that. Which means that desktop environments creators have to draw all these in the compositor. GNOME is the only desktop which does that, while many other desktops (KDE, XFCE, Lxqt, etc.) draw their components outside the compositor (an exception to that is cinnamon, because it started as a fork of GNOME 3). The situation is even worse. Apps like [plank dock], [latte dock] and other independent desktop  components can't exist in Wayland. There are protocol extensions that fix that, and I will talk about them later.
 
 In summary the situation is:
     - Desktop environments have to draw everything in the compositor.
@@ -45,24 +45,24 @@ According to these 3 facts, I've concluded my opinion which is: Wayland's core p
 What if you wanted some functionalities not available in the core protocol. Wayland or GNOME developers answer to this is Wayland's protocol extensions. That simply means that compositors can offer extra functionality through creating new protocols. The problem in this approach is that means that some apps may work on some compositors and may not work on the rest of compositors (that's if it needs some of the protocol extensions). That may had resulted in severe fragmentation in theory, but the reality is less worse, that's due to the efforts of [wlroots project] and KDE.
 
 # Wlroots has mostly saved the situation
-[Wlroots] is a library created by [Sway compositor] developers. It enables developers to create Wayland/X11 compositors easily. Their main focus is Wayland. There are already [more than 20 compositors] available based on wlroots. What is interesting though is the protocol extensions that wlroots implement.
+[Wlroots](https://gitlab.freedesktop.org/wlroots/wlroots) is a library created by [Sway compositor](https://swaywm.org/) developers. It enables developers to create Wayland/X11 compositors easily. Their main focus is Wayland. There are already many compositors available based on wlroots. What is interesting though is the protocol extensions that wlroots implement.
 
 Wlroots has many protocol extensions, including:
-    - [LayerShell] protocol
-    - [xdg-decoration] protocol
+    - [LayerShell]() protocol
+    - [xdg-decoration]() protocol
 
 The LayerShell protocol enables desktop components to be drawn outside the compositor. Which also makes it possible to create independent cross-desktop desktop components. There are many projects that utilize this protocol that you can explore in the following repositories:
-    -[sway shell]
-    -[wf-shell]
-    -[awesome-wayland]
+    -[sway shell]()
+    -[wf-shell]()
+    -[awesome-wayland]()
 
-Also have a look at [GtkLayerShell library]. Which is a library for writing Gtk apps with LayerShell protocol.
+Also have a look at [GtkLayerShell library](). Which is a library for writing Gtk apps with LayerShell protocol.
 Because LayerShell protocol is not a part of the core protocol apps using it work on wlroots based compositors and KDE, it's not supported only on GNOME.
 
 The second protocol is xdg-decoration protocol.
 Made by wlroots and KDE, it enables apps to choose between CSD and SSD.
 
-These protocols work on wlroots compositor, and KDE. The only obstacle preventing the unification of Linux desktop is GNOME. They have decided to not implement any of these protocol extensions. Which put all apps that use SSD in a situation where they have to use SSD in supporting environments and CSD in gnome. The people actually feeling the pain are toolkits developers. To give you more context, have a look at the ["CSD initiative"]() started by Tobias Bernard from GNOME, and [this blog post]() from Martin's blog (kwin's developer). Also have a look at this [issue](). The situation is mostly solved by now, that [Qt and Gtk draw CSD]() always on GNOME and utilize the xdg-decoration on other environments. However, in my opinion that is not good, because it makes the platform less standardized/unified for no good reason, because in the future, toolkits developers may decide to just go for CSD to avoid the pain.
+These protocols work on wlroots compositor, and KDE. The only obstacle preventing the unification of Linux desktop is GNOME. They have decided to not implement any of these protocol extensions. Which put all apps that use SSD in a situation where they have to use SSD in supporting environments and CSD in gnome. The people actually feeling the pain are toolkits developers. To give you more context, have a look at the ["CSD initiative"](https://blogs.gnome.org/tbernard/2018/01/26/csd-initiative/) started by Tobias Bernard from GNOME, and [this blog post](https://blog.martin-graesslin.com/blog/2018/01/server-side-decorations-and-wayland/) from Martin's blog (kwin's developer). Also have a look at this [issue](https://gitlab.gnome.org/GNOME/mutter/-/issues/217). The situation is mostly solved by now, that Qt and Gtk draw CSD always on GNOME and utilize the xdg-decoration on other environments. However, in my opinion that is not good, because it makes the platform less standardized/unified for no good reason, because in the future, toolkits developers may decide to just go for CSD to avoid the pain.
 
 # The root of all these problems.
 In my opinion, the root of all these is GNOME or Wayland developers' decision to have the core as minimum as possible and require the creation of protocol extensions.
