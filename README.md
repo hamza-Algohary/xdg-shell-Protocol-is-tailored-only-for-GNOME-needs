@@ -6,7 +6,7 @@ Wayland is a display server system based on the idea of [protocols](https://wayl
 
 That also means that the functions defined in the protocol decide what applications (aka: clients) can do & what they can't do. Returning to websites example, if the protocol doesn't define necessary functions, it will limit the web developers. Take CSS as an example, if it wasn't available in the web protocols, all websites would have looked the same and boring. So the protocol must include all necessary basics in a way that doesn't limit developers to few cases and uses.
 
-When Wayland developers started defining the protocol, they had to decide what functionalities to include in the protocol. Their decision was to [make the protocol as minimal as possible](), and compositors shall create new protocols for their specific use cases if they desire to offer more functionality not included in the main protocol. The main protocol was called [Wayland Core protocol](https://wayland.app/protocols/wayland), and other protocols are called [protocol extensions](https://wayland.app/protocols/). All compositors are expected to support the core protocol, and they may not support other protocol extensions. That means that applications which depend on certain functionality defined in one of the protocol extensions will not work on all compositors.
+When Wayland developers started defining the protocol, they had to decide what functionalities to include in the protocol. Their decision was to make the protocol as minimal as possible, and compositors shall create new protocols for their specific use cases if they desire to offer more functionality not included in the main protocol. The main protocol was called [Wayland Core protocol](https://wayland.app/protocols/wayland), and other protocols are called [protocol extensions](https://wayland.app/protocols/). All compositors are expected to support the core protocol, and they may not support other protocol extensions. That means that applications which depend on certain functionality defined in one of the protocol extensions will not work on all compositors.
 
 All of the above is what Wayland developers intended for the Wayland world to be. Now let's delve into more detail. How much is Wayland core protocol minimal? In other words, what determines what shall be in the core protocol and what shall not be? In this article I'm going to give you an answer to this question based on my opinion, which is in turn based on a group of simple facts.
 
@@ -42,21 +42,21 @@ The above three facts regarding the core protocol in summary are:
 
 According to these 3 facts, I've concluded my opinion which is: Wayland's core protocol is tailored only for GNOME needs.
 
-What if you wanted some functionalities not available in the core protocol. Wayland or GNOME developers answer to this is Wayland's protocol extensions. That simply means that compositors can offer extra functionality through creating new protocols. The problem in this approach is that means that some apps may work on some compositors and may not work on the rest of compositors (that's if it needs some of the protocol extensions). That may had resulted in severe fragmentation in theory, but the reality is less worse, that's due to the efforts of [wlroots project] and KDE.
+What if you wanted some functionalities not available in the core protocol. Wayland or GNOME developers answer to this is Wayland's protocol extensions. That simply means that compositors can offer extra functionality through creating new protocols. The problem in this approach is that means that some apps may work on some compositors and may not work on the rest of compositors (that's if it needs some of the protocol extensions). That may had resulted in severe fragmentation in theory, but the reality is less worse, that's due to the efforts of [wlroots project](https://gitlab.freedesktop.org/wlroots/wlroots) and KDE.
 
 # Wlroots has mostly saved the situation
 [Wlroots](https://gitlab.freedesktop.org/wlroots/wlroots) is a library created by [Sway compositor](https://swaywm.org/) developers. It enables developers to create Wayland/X11 compositors easily. Their main focus is Wayland. There are already many compositors available based on wlroots. What is interesting though is the protocol extensions that wlroots implement.
 
 Wlroots has many protocol extensions, including:
-    - [LayerShell]() protocol
-    - [xdg-decoration]() protocol
+    - [LayerShell](https://wayland.app/protocols/wlr-layer-shell-unstable-v1) protocol
+    - [xdg-decoration](https://wayland.app/protocols/xdg-decoration-unstable-v1) protocol
 
 The LayerShell protocol enables desktop components to be drawn outside the compositor. Which also makes it possible to create independent cross-desktop desktop components. There are many projects that utilize this protocol that you can explore in the following repositories:
-    -[sway shell]()
-    -[wf-shell]()
-    -[awesome-wayland]()
+    -[nwg-shell](https://github.com/nwg-piotr/nwg-shell)
+    -[wf-shell](https://github.com/WayfireWM/wf-shell)
+    -[awesome-wayland](https://github.com/natpen/awesome-wayland)
 
-Also have a look at [GtkLayerShell library](). Which is a library for writing Gtk apps with LayerShell protocol.
+Also have a look at [GtkLayerShell library](https://github.com/wmww/gtk-layer-shell). Which is a library for writing Gtk apps with LayerShell protocol.
 Because LayerShell protocol is not a part of the core protocol apps using it work on wlroots based compositors and KDE, it's not supported only on GNOME.
 
 The second protocol is xdg-decoration protocol.
