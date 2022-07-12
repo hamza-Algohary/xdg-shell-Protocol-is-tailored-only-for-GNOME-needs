@@ -70,5 +70,5 @@ Imagine if the web worked in a similar way. That means that websites would not b
 
 # What is the solution?
 The solution in my opinion, is to put all these protocol extensions in the core protocol, or that might not be necessary if GNOME implements the above protocols (Which is not likely to happen anytime soon.)
-In simple words GNOME are the bottleneck of the problem, and they have the ability to solve it of they decide to do so.
+In simple words GNOME are the root cause of the problem, and they have the ability to solve it, if they decide to do so.
 
