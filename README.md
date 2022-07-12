@@ -25,8 +25,8 @@ First, let's explain something. On most desktop environments desktop components 
 On X11, those were defined in what is called the [ICCCM specification](https://x.org/releases/X11R7.6/doc/xorg-docs/specs/ICCCM/icccm.html), which allows X11 clients to tell the compositor to do any of the above. On Wayland, there is not anything in the core protocol that allows that. Which means that desktop environments creators have to draw all these in the compositor. GNOME is the only desktop which does that, while many other desktops (KDE, XFCE, Lxqt, etc.) draw their components outside the compositor (an exception to that is cinnamon, because it started as a fork of GNOME 3). The situation is even worse. Apps like [plank dock](https://github.com/ricotz/plank), [latte dock](https://github.com/KDE/latte-dock) and other independent desktop  components can't exist in Wayland. There are protocol extensions that fix that, and I will talk about them later.
 
 In summary the situation is:
-    - Desktop environments have to draw everything in the compositor.
-    - It's impossible to create cross-desktop desktop components like plak and latte dock
+- Desktop environments have to draw everything in the compositor.
+- It's impossible to create cross-desktop desktop components like plak and latte dock
     
 ## 2. CSD is implementable although clients can't move their window.
 We have known before that the core protocol doesn't define a way for clients to move their windows. So how is CSD implemented? Well, there is a [function in the protocol](https://wayland-book.com/xdg-shell-in-depth/interactive.html) that tells the compositor to start dragging the window. So instead of having a function for moving the window, which would had been useful in many cases they resorted to having a function only useful for implementing CSD.
@@ -36,9 +36,9 @@ On X11, the situation was that apps expect to get decorated by the compositor (w
 
 ## Summary of what has been mentioned so far.
 The above three facts regarding the core protocol in summary are:
-    1. Desktop components need to be drawn by the compositor
-    2. CSD is a must.
-    3. CSD is implementable although clients can't move their windows.
+1. Desktop components need to be drawn by the compositor
+2. CSD is a must.
+3. CSD is implementable although clients can't move their windows.
 
 According to these 3 facts, I've concluded my opinion which is: Wayland's core protocol is tailored only for GNOME needs.
 
@@ -48,13 +48,13 @@ What if you wanted some functionalities not available in the core protocol. Wayl
 [Wlroots](https://gitlab.freedesktop.org/wlroots/wlroots) is a library created by [Sway compositor](https://swaywm.org/) developers. It enables developers to create Wayland/X11 compositors easily. Their main focus is Wayland. There are already many compositors available based on wlroots. What is interesting though is the protocol extensions that wlroots implement.
 
 Wlroots has many protocol extensions, including:
-    - [LayerShell](https://wayland.app/protocols/wlr-layer-shell-unstable-v1) protocol
-    - [xdg-decoration](https://wayland.app/protocols/xdg-decoration-unstable-v1) protocol
+- [LayerShell](https://wayland.app/protocols/wlr-layer-shell-unstable-v1) protocol
+- [xdg-decoration](https://wayland.app/protocols/xdg-decoration-unstable-v1) protocol
 
 The LayerShell protocol enables desktop components to be drawn outside the compositor. Which also makes it possible to create independent cross-desktop desktop components. There are many projects that utilize this protocol that you can explore in the following repositories:
-    -[nwg-shell](https://github.com/nwg-piotr/nwg-shell)
-    -[wf-shell](https://github.com/WayfireWM/wf-shell)
-    -[awesome-wayland](https://github.com/natpen/awesome-wayland)
+-[nwg-shell](https://github.com/nwg-piotr/nwg-shell)
+-[wf-shell](https://github.com/WayfireWM/wf-shell)
+-[awesome-wayland](https://github.com/natpen/awesome-wayland)
 
 Also have a look at [GtkLayerShell library](https://github.com/wmww/gtk-layer-shell). Which is a library for writing Gtk apps with LayerShell protocol.
 Because LayerShell protocol is not a part of the core protocol apps using it work on wlroots based compositors and KDE, it's not supported only on GNOME.
