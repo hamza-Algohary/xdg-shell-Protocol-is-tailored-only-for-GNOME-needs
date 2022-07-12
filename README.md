@@ -52,6 +52,7 @@ Wlroots has many protocol extensions, including:
 - [xdg-decoration](https://wayland.app/protocols/xdg-decoration-unstable-v1) protocol
 
 The LayerShell protocol enables desktop components to be drawn outside the compositor. Which also makes it possible to create independent cross-desktop desktop components. There are many projects that utilize this protocol that you can explore in the following repositories:
+
 -[nwg-shell](https://github.com/nwg-piotr/nwg-shell)
 -[wf-shell](https://github.com/WayfireWM/wf-shell)
 -[awesome-wayland](https://github.com/natpen/awesome-wayland)
