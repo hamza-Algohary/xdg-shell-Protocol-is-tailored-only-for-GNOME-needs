@@ -55,6 +55,7 @@ The LayerShell protocol enables desktop components to be drawn outside the compo
 - [nwg-shell](https://github.com/nwg-piotr/nwg-shell)
 - [wf-shell](https://github.com/WayfireWM/wf-shell)
 - [awesome-wayland](https://github.com/natpen/awesome-wayland)
+- [awesome-wlroots](https://github.com/solarkraft/awesome-wlroots)
 
 Also have a look at [GtkLayerShell library](https://github.com/wmww/gtk-layer-shell). Which is a library for writing Gtk apps with LayerShell protocol.
 Because LayerShell protocol is not a part of the core protocol apps using it work on wlroots based compositors and KDE, it's not supported only on GNOME.
